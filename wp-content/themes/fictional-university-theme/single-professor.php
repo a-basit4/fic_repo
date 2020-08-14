@@ -4,6 +4,7 @@ while (have_posts()) {
     the_post();
     pageBanner();
 ?>
+    <p class="hit">Only logged in user can hit a like, please log In first. </p>
     <div class="container container--narrow page-section">
         <div class="generic-content">
             <div class="row group">
