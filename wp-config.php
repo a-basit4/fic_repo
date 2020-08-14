@@ -37,7 +37,7 @@ if (file_exists(dirname(__FILE__) . '/local.php')) {
 	/** MySQL database username */
 	define('DB_USER', 'epiz_26469806');
 	/** MySQL database password */
-	define('DB_PASSWORD', 'Basit12345');
+	define('DB_PASSWORD', 'Inhbkcndytg2893');
 	/** MySQL hostname */
 	define('DB_HOST', 'sql113.epizy.com');
 }
