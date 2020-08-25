@@ -37,6 +37,21 @@ function university_post_types()
         'menu_icon' => 'dashicons-calendar'
     ));
 
+    // Home Page Slide post type ;
+    register_post_type('Homeslide', array(
+        'supports' => array('title', 'editor', 'excerpt'),
+        'rewrite' => array('slug' => 'homeslides'),
+        'public' => true,
+        'labels' => array(
+            'name'   => 'Home slides',
+            'add_new_item' => 'Add New Home slide',
+            'edit_item' => 'Edit Home slide',
+            'all_items' => 'All Home slides',
+            'singular_name' => 'Home slide'
+        ),
+        'menu_icon' => 'dashicons-controls-repeat'
+    ));
+
     // likes Post Type ;
     register_post_type('like', array(
         'supports' => array('title'),

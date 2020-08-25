@@ -11,9 +11,10 @@ while (have_posts()) {
 
     <div class="container container--narrow page-section">
         <div class="create-note">
-            <h2 class="headline headline--medium">Create New Note</h2>
-            <input class="new-note-title" placeholder="Title">
-            <textarea class="new-note-body" placeholder="Your note here..."></textarea>
+            <h2 class="headline headline--medium" style="float: left;">Create New Note</h2>
+            <p style="float: right;">Maximum number of characters limit : 1000</p>
+            <input class="new-note-title" placeholder="Title" maxlength="70">
+            <textarea class="new-note-body" placeholder="Your note here..." maxlength="1000"></textarea>
             <span class="submit-note">Create Note</span>
             <span class="note-limit-message">Note limit reached: Delete an existing note to make room for new one.</span>
         </div>
