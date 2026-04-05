@@ -57,7 +57,8 @@
                         <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
                         <p><?php if (has_excerpt()) echo get_the_excerpt();
                             else echo wp_trim_words(get_the_content(), 18); ?>
-                            <a href="<?php the_permalink(); ?>" class="nu gray">Read more</a></p>
+                            <a href="<?php the_permalink(); ?>" class="nu gray">Read more</a>
+                        </p>
                     </div>
                 </div>
             <?php }
@@ -69,26 +70,32 @@
 <?php
 $slide = new WP_Query(array(
     "post_type" => "Homeslide"
-))
-?>
-<div class="hero-slider">
-    <div data-glide-el="track" class="glide__track">
-        <div class="glide__slides">
-            <?php while ($slide->have_posts()) {
-                $slide->the_post(); ?>
-                <div class="hero-slider__slide" style="background-image: url(<?php the_field('slide_background_image') ?>);">
-                    <div class="hero-slider__interior container">
-                        <div class="hero-slider__overlay">
-                            <h2 class="headline headline--medium t-center"><?php the_title(); ?></h2>
-                            <p class="t-center"><?php the_field('page_banner_subtitle'); ?></p>
-                            <p class="t-center no-margin"><a href="<?php the_permalink(); ?>" class="btn btn--blue">Learn more</a></p>
+));
+
+// Check if there are slides
+if ($slide->have_posts()) : ?>
+    <div class="hero-slider">
+        <div data-glide-el="track" class="glide__track">
+            <div class="glide__slides">
+                <?php while ($slide->have_posts()) : $slide->the_post(); ?>
+                    <div class="hero-slider__slide" style="background-image: url(<?php the_field('slide_background_image'); ?>);">
+                        <div class="hero-slider__interior container">
+                            <div class="hero-slider__overlay">
+                                <h2 class="headline headline--medium t-center"><?php the_title(); ?></h2>
+                                <p class="t-center"><?php the_field('page_banner_subtitle'); ?></p>
+                                <p class="t-center no-margin">
+                                    <a href="<?php the_permalink(); ?>" class="btn btn--blue">Learn more</a>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php } ?>
+                <?php endwhile; ?>
+            </div>
         </div>
+        <div class="slider__bullets glide__bullets" data-glide-el="controls[nav]"></div>
     </div>
-    <div class="slider__bullets glide__bullets" data-glide-el="controls[nav]"></div>
-</div>
-</div>
-<?php get_footer(); ?>
+<?php endif;
+
+wp_reset_postdata(); // Reset post data after custom query
+get_footer();
+?>
