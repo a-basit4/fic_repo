@@ -4,11 +4,14 @@
  *
  * @package    Members
  * @subpackage Admin
- * @author     Justin Tadlock <justintadlock@gmail.com>
- * @copyright  Copyright (c) 2009 - 2018, Justin Tadlock
- * @link       https://themehybrid.com/plugins/members
+ * @author     The MemberPress Team 
+ * @copyright  Copyright (c) 2009 - 2018, The MemberPress Team
+ * @link       https://members-plugin.com/
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
+if (!defined('ABSPATH')) {
+    die('You are not allowed to call this page directly.');
+}
 
 /**
  * Help sidebar for all of the help tabs.
@@ -20,8 +23,8 @@
 function members_get_help_sidebar_text() {
 
 	// Get docs and help links.
-	$docs_link = sprintf( '<li><a href="https://github.com/justintadlock/members/blob/master/readme.md">%s</a></li>', esc_html__( 'Documentation',  'members' ) );
-	$help_link = sprintf( '<li><a href="https://themehybrid.com/board/topics">%s</a></li>',                            esc_html__( 'Support Forums', 'members' ) );
+	$docs_link = sprintf( '<li><a href="https://members-plugin.com/docs/">%s</a></li>', esc_html__( 'Documentation',  'members' ) );
+	$help_link = sprintf( '<li><a href="https://wordpress.org/support/plugin/members/">%s</a></li>', esc_html__( 'Support Forums', 'members' ) );
 
 	// Return the text.
 	return sprintf(
@@ -184,10 +187,10 @@ function members_memberpress_upgrade( $link = 'https://memberpress.com/plans/pri
 			<div class="mepr-upgrade-content">
 				<h2>Charge Members for Your Protected Content</h2>
 				<h4>Members Lite cannot access payments.</h4>
-				<p>Once you upgrade to MemberPress, you'll be able to charge your members for access to your content.</p>
+				<p>Once you add MemberPress, you'll be able to charge your members for access to your content.</p>
 				<ul class="features">
 					<li>Charge for Access to Content</li>
-					<li>Create Memberships</li>
+					<li>Create Memberships, Courses, and Coaching Programs</li>
 					<li>Manage Members</li>
 					<li>Advanced Reports</li>
 					<li>Recurring Payments</li>
@@ -197,7 +200,7 @@ function members_memberpress_upgrade( $link = 'https://memberpress.com/plans/pri
 				</ul>
 			</div>
 			<div class="mepr-upgrade-cta">
-				<a href="<?php echo esc_url( $link ); ?>" id="mepr_cta_upgrade_link" class="mepr-cta-button">Upgrade to MemberPress Now</a>
+				<a href="<?php echo esc_url( $link ); ?>" id="mepr_cta_upgrade_link" class="mepr-cta-button">Add MemberPress Now</a>
 				and start charging for access!
 			</div>
 		</div>

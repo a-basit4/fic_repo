@@ -23,11 +23,11 @@
 if (file_exists(dirname(__FILE__) . '/local.php')) {
 	// Local database settings
 	/** The name of the database for WordPress */
-	define('DB_NAME', 'fic_uni');
+	define('DB_NAME', 'fic');
 	/** MySQL database username */
 	define('DB_USER', 'root');
 	/** MySQL database password */
-	define('DB_PASSWORD', '');
+	define('DB_PASSWORD', 'basit');
 	/** MySQL hostname */
 	define('DB_HOST', 'localhost');
 } else {
@@ -89,6 +89,9 @@ $table_prefix = 'wp_';
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
 define('WP_DEBUG', false);
+define('WP_DEBUG_DISPLAY', false);
+define('WP_DEBUG_LOG', false);
+@ini_set('display_errors', 0);
 
 /* That's all, stop editing! Happy publishing. */
 

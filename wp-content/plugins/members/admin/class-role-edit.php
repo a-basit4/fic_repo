@@ -4,14 +4,14 @@
  *
  * @package    Members
  * @subpackage Admin
- * @author     Justin Tadlock <justintadlock@gmail.com>
- * @copyright  Copyright (c) 2009 - 2018, Justin Tadlock
- * @link       https://themehybrid.com/plugins/members
+ * @author     The MemberPress Team 
+ * @copyright  Copyright (c) 2009 - 2018, The MemberPress Team
+ * @link       https://members-plugin.com/
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
-
 namespace Members\Admin;
 
+defined('ABSPATH') || exit;
 /**
  * Class that displays the edit role screen and handles the form submissions for that page.
  *
@@ -123,6 +123,20 @@ final class Role_Edit {
 			$grant_caps = ! empty( $_POST['grant-caps'] ) ? members_remove_hidden_caps( array_unique( $_POST['grant-caps'] ) ) : array();
 			$deny_caps  = ! empty( $_POST['deny-caps'] )  ? members_remove_hidden_caps( array_unique( $_POST['deny-caps']  ) ) : array();
 
+			// Get the new role label if submitted
+			$role_label = ! empty( $_POST['role_label'] ) ? sanitize_text_field( $_POST['role_label'] ) : '';
+
+			if ($role_label) {
+				global $wp_roles;
+				if (isset($wp_roles->roles[$this->role->name])) {
+					$wp_roles->roles[$this->role->name]['name'] = $role_label;
+					// Also update the role names array which is used for translations
+					$wp_roles->role_names[$this->role->name] = $role_label;
+					// Make sure changes are persisted
+					update_option($wp_roles->role_key, $wp_roles->roles);
+				}
+			}
+
 			// Get the new (custom) granted and denied caps.
 			$grant_new_caps = ! empty( $_POST['grant-new-caps'] ) ? members_remove_hidden_caps( array_unique( $_POST['grant-new-caps'] ) ) : array();
 			$deny_new_caps  = ! empty( $_POST['deny-new-caps'] )  ? members_remove_hidden_caps( array_unique( $_POST['deny-new-caps']  ) ) : array();
@@ -208,7 +222,7 @@ final class Role_Edit {
 			members_register_role(
 				$this->role->name,
 				array(
-					'label' => $this->members_role->get( 'label' ),
+					'label' => $role_label ? $role_label : $this->members_role->get( 'label' ),
 					'caps'  => $this->role->capabilities
 				)
 			);
@@ -241,8 +255,7 @@ final class Role_Edit {
 		do_action( 'members_load_role_edit' );
 
 		// Hook for adding in meta boxes.
-		do_action( 'add_meta_boxes_' . get_current_screen()->id, $this->role->name );
-		do_action( 'add_meta_boxes',   get_current_screen()->id, $this->role->name );
+		do_action( 'members_add_role_meta_boxes', get_current_screen()->id );
 
 		// Add layout screen option.
 		add_screen_option( 'layout_columns', array( 'max' => 2, 'default' => 2 ) );
@@ -318,7 +331,7 @@ final class Role_Edit {
 
 								<div id="titlewrap">
 									<span class="screen-reader-text"><?php esc_html_e( 'Role Name', 'members' ); ?></span>
-									<input type="text" disabled="disabled" readonly="readonly" value="<?php echo esc_attr( members_get_role( $this->role->name )->get( 'label' ) ); ?>" />
+									<input type="text" name="role_label" value="<?php echo esc_attr( members_get_role( $this->role->name )->get( 'label' ) ); ?>" />
 								</div><!-- #titlewrap -->
 
 								<div class="inside">

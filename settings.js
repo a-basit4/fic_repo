@@ -1,5 +1,5 @@
 exports.themeLocation = './wp-content/themes/fictional-university-theme/';
-exports.urlToPreview = 'http://localhost/wordpress/fic_uni/';
+exports.urlToPreview = 'http://localhost/wordpress/fic_repo/';
 
 // If you're using Local by Flywheel you will
 // want your settings to be similar to the examples below:

@@ -2,10 +2,10 @@
  * User status select component.
  *
  * @package   MembersBlockPermissions
- * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright 2019 Justin Tadlock
+ * @author    The MemberPress Team 
+ * @copyright 2019 The MemberPress Team
  * @license   https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
- * @link      https://themehybrid.com/plugins/members-block-permissions
+ * @link      https://members-plugin.com/-block-permissions
  */
 
 // Get the core WP select control.
@@ -36,6 +36,8 @@ class UserStatusSelect extends Component {
 				label={ labels.label }
 				value={ blockPermissionsUserStatus }
 				options={ options }
+				__next40pxDefaultSize={ true }
+				__nextHasNoMarginBottom={ true }
 				onChange={ ( selected ) => {
 					props.setAttributes( { blockPermissionsUserStatus: selected } );
 				} }

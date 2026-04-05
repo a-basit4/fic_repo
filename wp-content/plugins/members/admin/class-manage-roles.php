@@ -4,14 +4,14 @@
  *
  * @package    Members
  * @subpackage Admin
- * @author     Justin Tadlock <justintadlock@gmail.com>
- * @copyright  Copyright (c) 2009 - 2018, Justin Tadlock
- * @link       https://themehybrid.com/plugins/members
+ * @author     The MemberPress Team 
+ * @copyright  Copyright (c) 2009 - 2018, The MemberPress Team
+ * @link       https://members-plugin.com/
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
-
 namespace Members\Admin;
 
+defined('ABSPATH') || exit;
 /**
  * Role management class.
  *
@@ -73,7 +73,8 @@ final class Manage_Roles {
 
 		// The "Roles" page should be shown for anyone that has the 'list_roles', 'edit_roles', or
 		// 'delete_roles' caps, so we're checking against all three.
-		$edit_roles_cap = 'list_roles';
+		$edit_roles_cap = apply_filters( 'members_show_roles_page_cap ', 'list_roles' );
+
 
 		// If the current user can 'edit_roles'.
 		if ( current_user_can( 'edit_roles' ) )

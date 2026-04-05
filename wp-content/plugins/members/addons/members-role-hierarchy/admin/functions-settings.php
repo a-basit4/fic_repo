@@ -3,11 +3,14 @@
  * Functions and filters related to plugin settings in the admin.
  *
  * @package   MembersRoleHierarchy
- * @author    Justin Tadlock <justin@justintadlock.com>
- * @copyright Copyright (c) 2017, Justin Tadlock
- * @link      http://themehybrid.com/plugins/members-role-hierarchy
+ * @author    The MemberPress Team 
+ * @copyright Copyright (c) 2017, The MemberPress Team
+ * @link      https://members-plugin.com/
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
+if (!defined('ABSPATH')) {
+    die('You are not allowed to call this page directly.');
+}
 
 # Register settings on `admin_init`.
 add_action( 'admin_init', 'mrh_register_settings', 15 );
@@ -30,7 +33,7 @@ function mrh_register_settings() {
 		'mrh_role_hierarchy',
 		esc_html__( 'Role Hierarchy', 'members' ),
 		'mrh_settings_field_hierarchy',
-		'admin_page_members-settings',
+		'members-settings',
 		'roles_caps'
 	);
 }

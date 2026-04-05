@@ -1,43 +1,19 @@
+# Local development overrides
 /local.php
 
-# After your first big deploy and all of your files are already
-# on your web host you could uncomment the following items
-# app/wp-content/uploads/
-/wp-admin
-/wp-includes
+# WordPress core files (optional, only if you want to exclude core)
+# /wp-admin
+# /wp-includes
 
-# You could also list the indidivual WordPress system files that
-# live in the root of our folder, for example, here are just a few
-/index.php
-/license.txt
-/readme.html
-/wp-activate.php
-/wp-blog-header.php
-# so on and so forth
+# WordPress system files
 
-
-# Here is an example of how you could ignore the plugins folder
-# and then use the exclamation point to un-ignore only certain plugins
-# that do not auto-update and that you DO want to keep in Git.
-/wp-content/plugins/
-# !app/wp-content/plugins/advanced-custom-fields-pro/
-
-
-# Numerous always-ignore extensions
-*.diff
-*.err
-*.orig
-*.log
-*.rej
-*.swo
-*.swp
-*.vi
-*~
-*.sass-cache
+# Node / build files
 /node_modules/
-.tmp/
+/.tmp/
+/dist/
+/sass-cache/
 
-# OS or Editor folders
+# OS / editor files
 .DS_Store
 Thumbs.db
 .cache
@@ -52,3 +28,13 @@ nbproject
 .komodotools
 _notes
 dwsync.xml
+*.swo
+*.swp
+*~
+
+# Logs
+*.log
+*.err
+*.diff
+*.orig
+*.rej

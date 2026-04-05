@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		$(this).addClass('nav-tab-active');
 		$.get($(this).attr('href'), function(data) {
-			$('#TB_ajaxContent').html(data);
+			$('.mic-modal-body').html(data);
 		});
 	});
 	
@@ -37,33 +37,4 @@ jQuery(document).ready(function($) {
 			}
 		}, 'json');
 	});
-	
-	 $('.mic-link').click( function() {
-		tb_position();
-	});
-	 
-	 $(document).on('click', '#TB_closeWindowButton, .TB_overlayBG', function(e) {
-		 $('#TB_overlay,#TB_window').remove();
-	 });
-	 
-	 function adjustMicWindowSize() {
-		 	if( ! $('#TB_ajaxContent .mic-editor-wrapper').length) {
-		 		return;
-		 	}
-			var tbWindow = $('#TB_window'), width = $(window).width(), H = 560, W = ( 980 < width ) ? 980 : width, adminbar_height = 0;
-
-			if ( $('body.admin-bar').length )
-				adminbar_height = 28;
-
-			if ( tbWindow.size() ) {
-				tbWindow.width( W ).height( H - 45 - adminbar_height );
-				$('#TB_iframeContent, #TB_ajaxContent').width( W).height( H - 75 - adminbar_height );
-				tbWindow.css({'margin-left': '-' + parseInt((( W) / 2),10) + 'px'});
-				if ( typeof document.body.style.maxWidth != 'undefined' )
-					tbWindow.css({'top': 20 + adminbar_height + 'px','margin-top':'0'});
-			};
-	 }
-	 
-	 setInterval(adjustMicWindowSize, 200);
-
 });

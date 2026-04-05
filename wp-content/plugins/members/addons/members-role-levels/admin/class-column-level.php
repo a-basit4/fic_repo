@@ -4,11 +4,14 @@
  *
  * @package    MembersRoleLevels
  * @subpackage Admin
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015, Justin Tadlock
- * @link       http://themehybrid.com/plugins/members-role-levels
+ * @author     The MemberPress Team 
+ * @copyright  Copyright (c) 2015, The MemberPress Team
+ * @link       https://members-plugin.com/
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
+if (!defined('ABSPATH')) {
+    die('You are not allowed to call this page directly.');
+}
 
 /**
  * Manage role levels class.

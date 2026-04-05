@@ -4,14 +4,14 @@
  *
  * @package    Members
  * @subpackage Admin
- * @author     Justin Tadlock <justintadlock@gmail.com>
- * @copyright  Copyright (c) 2009 - 2018, Justin Tadlock
- * @link       https://themehybrid.com/plugins/members
+ * @author     The MemberPress Team 
+ * @copyright  Copyright (c) 2009 - 2018, The MemberPress Team
+ * @link       https://members-plugin.com/
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
-
 namespace Members\Admin;
 
+defined('ABSPATH') || exit;
 /**
  * Sets up and handles the add-ons settings view.
  *
@@ -55,14 +55,14 @@ class View_Addons extends View {
 		<div class="widefat">
 
 			<div class="members-addons">
-				
+
 				<?php if ( $addons ) : ?>
 
 					<?php foreach ( $addons as $addon ) : ?>
-						
+
 						<?php
 							if ( $addon->is_memberpress ) {
-								if ( ! is_plugin_active( 'memberpress/memberpress.php' ) ) {
+								if ( ! members_is_memberpress_active() ) {
 									$this->addon_card( $addon );
 								}
 							} else {
@@ -91,7 +91,7 @@ class View_Addons extends View {
 		</div>
 		<script>
 			jQuery(document).ready(function($) {
-				$('.mepr-upgrade-activate-link').click(function(e){
+				$('.mepr-upgrade-activate-link').on('click', function(e){
 					var url = $(this).data('url');
 					$('#mepr_cta_upgrade_link').prop('href', url);
 				});
@@ -115,6 +115,9 @@ class View_Addons extends View {
 				<div class="name column-name">
 					<h3>
 						<?php if ( $addon->url ) : ?>
+              <?php if ($addon->is_memberpress) : ?>
+                <img src="<?php echo members_plugin()->uri . "img/mp-icon-RGB.jpg"; ?>" class="plugin-icon-small" alt="">
+              <?php endif; ?>
 							<a href="<?php echo esc_url( $addon->url ); ?>" target="_blank">
 						<?php endif; ?>
 

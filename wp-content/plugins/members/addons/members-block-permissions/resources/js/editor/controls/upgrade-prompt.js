@@ -2,10 +2,10 @@
  * Upgrade Prompt component.
  *
  * @package   MembersBlockPermissions
- * @author    Caseproof LLC
- * @copyright 2019 Caseproof LLC
+ * @author    The MemberPress Team
+ * @copyright 2025 The MemberPress Team
  * @license   https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
- * @link      https://themehybrid.com/plugins/members-block-permissions
+ * @link      https://members-plugin.com/-block-permissions
  */
 
 import '../styles/upgrade-prompt.css';
@@ -21,7 +21,7 @@ class UpgradePrompt extends Component {
 					{this.props.message}
 				</div>
 				<div className="members-bp-memberpress-upgrade__cta">
-					<a href="https://memberpress.com/plans/pricing" target="_blank" className="members-bp-memberpress-upgrade__cta-button">Upgrade to MemberPress</a>
+					<a href="https://memberpress.com/plans/pricing" target="_blank" className="members-bp-memberpress-upgrade__cta-button">Add MemberPress</a>
 				</div>
 			</div>
 		);

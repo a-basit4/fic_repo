@@ -3,7 +3,7 @@
 Plugin Name: Manual Image Crop
 Plugin URI: https://github.com/tomaszsita/wp-manual-image-crop
 Description: Plugin allows you to manually crop all the image sizes registered in your WordPress theme (in particular featured image). Simply click on the "Crop" link next to any image in your media library and select the area of the image you want to crop.
-Version: 1.12
+Version: 1.13
 Author: Tomasz Sita
 Author URI: https://github.com/tomaszsita
 License: GPL2
@@ -11,9 +11,12 @@ Text Domain: microp
 Domain Path: /languages/
 */
 
-define('mic_VERSION', '1.12');
+define('mic_VERSION', '1.13');
 
 include_once(dirname(__FILE__) . '/lib/ManualImageCropSettingsPage.php');
+include_once(dirname(__FILE__) . '/lib/ManualImageCropYoastFix.php');
+include_once(dirname(__FILE__) . '/lib/ManualImageCropJetpackFix.php');
+include_once(dirname(__FILE__) . '/lib/ManualImageCropGifFix.php');
 
 //mic - stands for Manual Image Crop
 
@@ -65,10 +68,12 @@ function mic_ajax_crop_image() {
  * add settings link on plugin page
  */
 function mic_settings_link($links) {
-	$settings_link = '<a href="options-general.php?page=Mic-setting-admin">' . __('Settings') . '</a>';
+	        $settings_link = '<a href="options-general.php?page=Mic-setting-admin">' . __('Settings', 'microp') . '</a>';
 	array_unshift($links, $settings_link);
 	return $links;
 }
 
 $plugin = plugin_basename(__FILE__);
 add_filter("plugin_action_links_$plugin", 'mic_settings_link' );
+
+

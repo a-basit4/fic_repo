@@ -1,9 +1,10 @@
 <?php
 /**
  * Plugin Name: Members
- * Plugin URI:  https://memberpress.com/plugins/members
+ * Plugin URI:  https://members-plugin.com/
  * Description: A user and role management plugin that puts you in full control of your site's permissions. This plugin allows you to edit your roles and their capabilities, clone existing roles, assign multiple roles per user, block post content, or even make your site completely private.
- * Version:     3.0.10
+ * Version:     3.2.19
+ * Requires PHP: 7.4
  * Author:      MemberPress
  * Author URI:  https://memberpress.com
  * Text Domain: members
@@ -23,14 +24,11 @@
  *
  * You should have received a copy of the GNU General Public License along with this program; if not,
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- *
- * @package   Members
- * @version   3.0.2
- * @author    MemberPress <support@memberpress.com>
- * @copyright Copyright (c) 2004 - 2020, Caseproof
- * @link      https://memberpress.com/plugins/members
- * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
+
+if (!defined('ABSPATH')) {
+    die('You are not allowed to call this page directly.');
+}
 
 /**
  * Singleton class for setting up the plugin.
@@ -105,7 +103,11 @@ final class Members_Plugin {
 	 * @access private
 	 * @return void
 	 */
-	private function __construct() {}
+	private function __construct() {
+		require_once(__DIR__ . '/vendor-prefixed/autoload.php');
+
+		add_action( 'plugins_loaded', array( $this, 'init_growth_tools' ) );
+	}
 
 	/**
 	 * Magic method to output a string if trying to use the object as a string.
@@ -211,12 +213,16 @@ final class Members_Plugin {
 		// Load template files.
 		require_once( $this->dir . 'inc/template.php' );
 
+		// Notifications (cannot be included inside is_admin() check or cron won't work)
+		require_once( $this->dir . 'admin/class-notifications.php' );
+
 		// Load admin files.
 		if ( is_admin() ) {
 
 			// General admin functions.
 			require_once( $this->dir . 'admin/functions-admin.php' );
 			require_once( $this->dir . 'admin/functions-help.php'  );
+			require_once( $this->dir . 'admin/class-review-prompt.php'  );
 
 			// Plugin settings.
 			require_once( $this->dir . 'admin/class-settings.php' );
@@ -262,10 +268,6 @@ final class Members_Plugin {
 	 * @return void
 	 */
 	private function setup_actions() {
-
-		// Internationalize the text strings used.
-		add_action( 'plugins_loaded', array( $this, 'i18n' ), 2 );
-
 		// Migrate add-ons
 		add_action( 'plugins_loaded', array( $this, 'migrate_addons' ) );
 
@@ -277,15 +279,21 @@ final class Members_Plugin {
 	}
 
 	/**
-	 * Loads the translation files.
+	 * Initialize Growth Tools.
 	 *
-	 * @since  1.0.0
+	 * @since  3.2.19
 	 * @access public
 	 * @return void
 	 */
-	public function i18n() {
-
-		load_plugin_textdomain( 'members', false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ) . 'lang' );
+	public function init_growth_tools() {
+		if ( version_compare( phpversion(), '7.4', '>=' ) && class_exists( '\Members\Caseproof\GrowthTools\App' ) ) {
+			$config = new \Members\Caseproof\GrowthTools\Config( [
+				'parentMenuSlug' => 'members',
+				'instanceId'     => 'members',
+				'menuSlug'       => 'members-growth-tools',
+			] );
+			new \Members\Caseproof\GrowthTools\App( $config );
+		}
 	}
 
 	/**
@@ -323,6 +331,14 @@ final class Members_Plugin {
 				$role->add_cap( 'delete_roles' ); // Delete existing roles.
 				$role->add_cap( 'edit_roles'   ); // Edit existing roles/caps.
 			}
+		}
+
+		$flag = get_transient( 'members_30days_flag' );
+		if ( empty( $flag ) ) {
+			set_transient( 'members_30days_flag', true, 30 * DAY_IN_SECONDS );
+		}
+		if ( empty( get_option( 'members_activated' ) ) ) {
+			update_option( 'members_activated', time() );
 		}
 	}
 
@@ -425,7 +441,7 @@ final class Members_Plugin {
 	public function run_addon_activator( $addon ) {
 
 		if ( file_exists( trailingslashit( __DIR__ ) . "addons/{$addon}/src/Activator.php" ) ) {
-			
+
 			// Require the add-on file
 			include "addons/{$addon}/src/Activator.php";
 
@@ -443,7 +459,7 @@ final class Members_Plugin {
 
 	public function block_editor_assets() {
 		$active_addons = get_option( 'members_active_addons', array() );
-		if ( ! in_array( 'members-block-permissions', $active_addons ) ) {
+		if ( ! in_array( 'members-block-permissions', $active_addons ) && ! members_is_memberpress_active() ) {
 			wp_enqueue_script( 'block-editor-mp-upsell', plugin_dir_url( __FILE__ ) . '/addons/members-block-permissions/public/js/upsell.js' , array(
 				'wp-compose',
 				'wp-element',
@@ -452,7 +468,7 @@ final class Members_Plugin {
 			), null, true );
 			wp_localize_script( 'block-editor-mp-upsell', 'membersUpsell', array(
 				'title' => __( 'Permissions', 'members' ),
-				'message' => __( 'To protect this block by paid membership or centrally with a content protection rule, upgrade to MemberPress.', 'members' )
+				'message' => __( 'To protect this block by paid membership or centrally with a content protection rule, add MemberPress.', 'members' )
 			) );
 		}
 	}

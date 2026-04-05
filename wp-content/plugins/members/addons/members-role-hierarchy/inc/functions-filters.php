@@ -3,11 +3,14 @@
  * Custom filters to make the plugin work.
  *
  * @package   MembersRoleHierarchy
- * @author    Justin Tadlock <justin@justintadlock.com>
- * @copyright Copyright (c) 2017, Justin Tadlock
- * @link      http://themehybrid.com/plugins/members-role-hierarchy
+ * @author    The MemberPress Team 
+ * @copyright Copyright (c) 2017, The MemberPress Team
+ * @link      https://members-plugin.com/
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
+if (!defined('ABSPATH')) {
+    die('You are not allowed to call this page directly.');
+}
 
 # Filter the editable roles.
 add_filter( 'editable_roles', 'mrh_editable_roles', 95 );

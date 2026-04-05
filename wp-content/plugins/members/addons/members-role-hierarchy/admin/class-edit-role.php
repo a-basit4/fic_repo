@@ -4,11 +4,14 @@
  * callback functionality.
  *
  * @package   MembersRoleHierarchy
- * @author    Justin Tadlock <justin@justintadlock.com>
- * @copyright Copyright (c) 2017, Justin Tadlock
- * @link      http://themehybrid.com/plugins/members-role-hierarchy
+ * @author    The MemberPress Team 
+ * @copyright Copyright (c) 2017, The MemberPress Team
+ * @link      https://members-plugin.com/
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
+if (!defined('ABSPATH')) {
+    die('You are not allowed to call this page directly.');
+}
 
 /**
  * Edit role class.
@@ -73,7 +76,7 @@ final class MRH_Edit_Role {
 	 */
 	public function load() {
 
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+		add_action( 'members_add_role_meta_boxes', array( $this, 'add_meta_boxes' ) );
 	}
 
 	/**

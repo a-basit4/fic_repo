@@ -4,14 +4,19 @@
  *
  * @package    Members
  * @subpackage Includes
- * @author     Justin Tadlock <justintadlock@gmail.com>
- * @copyright  Copyright (c) 2009 - 2018, Justin Tadlock
- * @link       https://themehybrid.com/plugins/members
+ * @author     The MemberPress Team
+ * @copyright  Copyright (c) 2009 - 2018, The MemberPress Team
+ * @link       https://members-plugin.com/
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
+if (!defined('ABSPATH')) {
+    die('You are not allowed to call this page directly.');
+}
 
 # Add shortcodes.
 add_action( 'init', 'members_register_shortcodes' );
+
+add_filter( 'login_redirect', 'members_login_redirect', 9, 3 );
 
 /**
  * Registers shortcodes.
@@ -212,6 +217,193 @@ function members_access_check_shortcode( $attr, $content = null ) {
  * @return string
  */
 function members_login_form_shortcode() {
+    ob_start();
+    if ( is_user_logged_in() ) { ?>
+        <div class="members-login-form">
+            <p class="members-login-notice members-login-notice-success">
+                <?php esc_html_e('You are already logged in.', 'members'); ?>
+            </p>
+        </div>
+        <style>
+            .members-login-notice {
+                display: block !important;
+                max-width: 320px;
+                padding: 10px;
+                background: #f1f1f1;
+                border-radius: 4px;
+                border-left: 3px solid #36d651;
+                font-size: 18px;
+                font-weight: 500;
+            }
+        </style>
+    <?php } else {
+        // Add the login_form_bottom filter only for this specific Members shortcode form
+        add_filter( 'login_form_bottom', 'members_login_form_bottom' );
+        ?>
+        <div class="members-login-form">
+            <?php echo wp_login_form( array( 'echo' => false ) ); ?>
+        </div>
+        <?php
+        // Remove the filter after rendering to avoid affecting other login forms
+        remove_filter( 'login_form_bottom', 'members_login_form_bottom' );
+        ?>
+        <style>
+            .members-login-form * {
+                box-sizing: border-box;
+            }
+            .members-login-form label {
+                display: block;
+                margin-bottom: 4px;
+                font-size: 18px;
+                font-weight: 500;
+            }
+            .members-login-form input[type="text"],
+            .members-login-form input[type="password"] {
+                width: 100%;
+                max-width: 320px;
+                padding: 0.5rem 0.75rem;
+                border: 1px solid #64748b;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+            .members-login-form input[type="submit"] {
+                width: 100%;
+                max-width: 320px;
+                padding: 0.75rem;
+                cursor: pointer;
+                background: #64748b;
+                border: 0;
+                border-radius: 4px;
+                color: #fff;
+                font-size: 16px;
+                font-weight: 500;
+            }
+            .members-logged-in input[type="submit"] {
+                pointer-events: none;
+                opacity: 0.4;
+                cursor: not-allowed;
+            }
+            .members-login-notice {
+                display: block !important;
+                max-width: 320px;
+                padding: 10px;
+                background: #f1f1f1;
+                border-radius: 4px;
+                border-left: 3px solid #36d651;
+                font-size: 18px;
+                font-weight: 500;
+            }
+            .members-login-error {
+                border-left-color: #d63638;
+            }
+        </style>
+    <?php
+    }
+    return ob_get_clean();
+}
 
-	return wp_login_form( array( 'echo' => false ) );
+/**
+ * Filters the login redirect URL to send failed logins back to the
+ * referrer with a query arg of `login=failed`.
+ * Only applies to Members shortcode forms (verified via nonce).
+ *
+ * @since 3.2.18
+ *
+ * @param string $redirect_to    The redirect destination URL.
+ * @param string $request        The request URL.
+ * @param object $user           The user object.
+ * @return string                The redirect URL.
+ */
+function members_login_redirect( $redirect_to, $request, $user ) {
+    // Only handle redirects for Members shortcode forms (verified by nonce)
+    if ( ! isset( $_POST['members_login_nonce'] ) ||
+         ! wp_verify_nonce( $_POST['members_login_nonce'], 'members_login_form' ) ) {
+        return $redirect_to;
+    } elseif ( empty( $user ) || is_wp_error( $user ) ) {
+        // Start session if not already started
+        if (!session_id()) {
+            session_start();
+        }
+        
+        // Get the referrer URL
+        $redirect_to = $_SERVER['HTTP_REFERER'];
+        
+        // If we have a WP_Error object, capture the error message
+        if (is_wp_error($user)) {
+            $error_code = $user->get_error_code();
+            
+            if (empty(trim($error_code)) || $error_code == 'incorrect_password' || $error_code == 'invalid_username') {
+                // Don't store specific message, we'll use default in the display function
+                $_SESSION['members_login_error_message'] = __('Invalid username or password.', 'members');
+            } else {
+                $_SESSION['members_login_error_message'] = $user->get_error_message();
+            }
+        }
+        
+        // Add login=failed parameter
+        $redirect_to = add_query_arg('login', 'failed', $redirect_to);
+        
+        wp_redirect($redirect_to);
+        exit;
+    } else {
+        // On success, clear any error session data
+        if (!session_id()) {
+            session_start();
+        }
+        if (isset($_SESSION['members_login_error_message'])) {
+            unset($_SESSION['members_login_error_message']);
+        }
+        
+        // On success, return to the redirect_to URL
+        return remove_query_arg('login', $redirect_to);
+    }
+}
+
+/**
+ * Filters the login form bottom output to add a nonce and error message if the login has failed.
+ * This is only added to Members shortcode forms, not all WordPress login forms.
+ *
+ * @since 3.2.18
+ *
+ * @return string The HTML to output below the login form.
+ */
+function members_login_form_bottom() {
+    // Start session if not already started
+    if (!session_id()) {
+        session_start();
+    }
+
+    // Add a nonce to verify this is a Members shortcode submission
+    $output = wp_nonce_field( 'members_login_form', 'members_login_nonce', true, false );
+
+    if ( isset( $_REQUEST['login'] ) && $_REQUEST['login'] == 'failed' ) {
+        // Get error message from session
+        if (isset($_SESSION['members_login_error_message']) && !empty($_SESSION['members_login_error_message'])) {
+            $error_message = $_SESSION['members_login_error_message'];
+        } else {
+            // Default message if no specific error is found
+            $error_message = __('Invalid username or password.', 'members');
+        }
+        
+        // Allow specific HTML tags in error messages
+        $allowed_html = array(
+            'a' => array(
+                'href' => array(),
+                'title' => array(),
+                'target' => array(),
+                'rel' => array(),
+                'class' => array(),
+            ),
+            'br' => array(),
+            'em' => array(),
+            'strong' => array(),
+            'p' => array('class' => array()),
+            'span' => array('class' => array()),
+            'div' => array('class' => array()),
+        );
+        
+        $output .= '<p class="members-login-notice members-login-error">' . wp_kses($error_message, $allowed_html) . '</p>';
+    }
+
+    return $output;
 }

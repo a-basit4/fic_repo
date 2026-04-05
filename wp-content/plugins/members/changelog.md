@@ -1,4 +1,192 @@
 # Change Log
+## 3.2.19 - 2026-02-13
+### Fixed
+- Added support for WF 2FA error messages
+- Missing "you are already logged in" string
+- Add-on page RTL CSS fix
+- Block permissions fixes
+- Fix redirect_to issue on shortcode
+- Other minor bugfixes
+
+## 3.2.18 - 2025-05-20
+### Fixed
+- Add-on activate toggle display issue on narrow screens
+- Login error redirection
+- Outdated Login form styling
+- Allow changing display name for some Roles
+
+## 3.2.17 - 2024-12-23
+### Added
+- Added bulk select/unselect checkboxes on Role capabilities
+
+## 3.2.16 - 2024-12-12
+### Fixed
+- Protected posts being forced-hidden from API search even if setting was off
+
+## 3.2.15 - 2024-12-10
+### Fixed
+- Translation errors
+- Fixed styles and formatting on add-ons and about pages
+### Added
+- Growth Tools menu item
+
+## 3.2.14 - 2024-11-30
+### Fixed
+- Error in REST API calls when posts results not an array
+
+## 3.2.12 - 2024-11-29
+### Fixed
+- Cleaned up prior author name and links
+- Cleaned up broken or incorrect links
+- Removed some unnecessary files
+- Fixed incorrect gettext calls
+- Removed unneeded load_plugin_textdomain calls
+- Updated POT translation file
+
+## 3.2.11 - 2024-11-29
+### Fixed
+- Translation warnings after WP 6.7
+- Add option to hide protected content from REST API searches
+- Add support for Loco Translate plugin (via new loco.xml file)
+
+## 3.2.10 - 2024-09-09
+### Fixed
+- Capability checks on AJAX calls
+- PHP warning for $wp_embed
+- Requiring PHP 7.4 min now
+
+## 3.2.9 - 2023-11-28
+### Fixed
+- Fix PHP 8.1 deprecation notice on ACF integration (props @DSGND)
+
+## 3.2.8 - 2023-09-20
+### Added
+- Add members_wp_roles filter to WP roles in Content Permission box
+
+### Fixed
+- Fix Content Permission icon in Panel block
+- Fix position of Field Group menu item in ACF
+
+## 3.2.6-7 - 2023-08-08
+### Fixed
+- PHP 8+ Compatibility
+- members_show_roles_page_cap filter added for edit_roles_cap
+- Fix improperly named variable
+
+## 3.2.5 - 2023-04-28
+### Fixed
+- Fixed WP Cron task for in-plugin notifications running unnecessarily.
+
+## 3.2.4 - 2023-03-16
+### Fixed
+ - More package deployment fixes
+
+## 3.2.3 - 2023-03-16
+
+### Added
+- Footer with helpful links
+
+### Fixed
+- Fixed package files deployed unecessarily
+- Debug warnings
+- Correct bootstrap file required
+
+## 3.2.2 - 2022-10-24
+
+### Fixed
+- Fixed undefined index notice
+
+## 3.2.1 - 2022-04-19
+
+### Fixed
+- Fixed Uncaught TypeError: in_array()
+
+## 3.2.0 - 2022-04-18
+
+### Added
+- Members Notifications
+
+### Changed
+- Converted `jQuery.fn.click()` (deprecated) to `jQuery.fn.on('click')`
+- Replaced references to Affiliate Royale with Easy Affiliate
+- WP Tested Up To version (5.9)
+
+## 3.1.7 - 2021-12-30
+
+### Fixed
+- Hierarchical roles missing settings
+
+### Changed
+
+- Refactored checks for whether MemberPress is active; added `members_is_memberpress_active()`
+- "Paid Memberships" section of Content Permissions meta box should not show when MemberPress is active
+- Changed wording from "Upgrade to MemberPress" to "Add MemberPress"
+
+## 3.1.6 - 2021-10-28
+
+### Fixed
+
+- Using transients for review prompt causes the prompt to persist when dismissed; switched to using options instead
+- Users widget not working in new block-based widgets editor
+
+### Changed
+
+- WP Tested Up To version (5.8)
+
+### Added
+
+- "Miscellaneous" settings section
+- "Disable Review Prompt" setting to permanently remove the review prompt
+- `MEMBERS_DISABLE_REVIEW_PROMPT` constant to permanently remove the review prompt
+
+## 3.1.5 - 2021-03-25
+
+### Fixed
+
+- Block permissions not working for nested blocks (e.g. columns)
+
+## 3.1.4 - 2021-03-11
+
+### Changed
+
+- Convert instance of wp.editor to wp.blockEditor
+- Check for MemberPress constant instead of using `is_plugin_active()`
+
+### Fixed
+
+- Compatibility for PHP 8
+
+## 3.1.3 - 2020-09-16
+
+### Changed
+
+- Disabled Content Permissions side meta box
+
+### Fixed
+
+- Issue with comma-separated roles that include spaces
+
+## 3.1.2 - 2020-09-02
+
+### Fixed
+
+- Review prompt should only show to admins
+
+## 3.1.1 - 2020-09-01
+
+### Changed
+
+- Admin UI cleanup
+
+## 3.1.0 - 2020-08-31
+
+### Fixed
+
+- Issue with custom capabilities not saving to custom roles
+
+### Changed
+
+- Admin UI
 
 ## 3.0.10 - 2020-06-23
 
@@ -8,7 +196,7 @@
 
 ## 3.0.9 - 2020-06-22
 
-### Fixed 
+### Fixed
 
 - Fixed issue with ACF integration trying to bump priority on ACF menu
 

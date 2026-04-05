@@ -128,7 +128,7 @@ function noSubsAdminBar()
 }
 
 // Customize Login Screen
-add_filter('login_headerurl', 'ourHeaderUrl',);
+add_filter('login_headerurl', 'ourHeaderUrl');
 
 function ourHeaderUrl()
 {

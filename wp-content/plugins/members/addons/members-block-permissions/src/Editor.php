@@ -5,14 +5,14 @@
  * Handles block editor functionality.
  *
  * @package   MembersBlockPermissions
- * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright 2019, Justin Tadlock
- * @link      https://themehybrid.com/plugins/members-block-permissions
+ * @author    The MemberPress Team 
+ * @copyright 2019, The MemberPress Team
+ * @link      https://members-plugin.com/-block-permissions
  * @license   https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
  */
-
 namespace Members\BlockPermissions;
 
+defined('ABSPATH') || exit;
 /**
  * Editor component class.
  *
@@ -29,7 +29,7 @@ class Editor {
 	 * @return void
 	 */
 	public function boot() {
-		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue'] );
+		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue'], 1 );
 	}
 
 	/**
@@ -128,8 +128,8 @@ class Editor {
 		];
 
 		$labels['notices']['notAllowed'] = __( 'Your user account does not have access to assign permissions to this block.', 'members' );
-		$labels['paidMembership'] = __( 'To protect this block by paid membership or centrally with a content protection rule, upgrade to MemberPress.', 'members' );
-		$labels['contentRule'] = __( 'To protect this block by paid membership or centrally with a content protection rule, upgrade to MemberPress.', 'members' );
+		$labels['paidMembership'] = __( 'To protect this block by paid membership or centrally with a content protection rule, add MemberPress.', 'members' );
+		$labels['contentRule'] = __( 'To protect this block by paid membership or centrally with a content protection rule, add MemberPress.', 'members' );
 
 		$data = [
 			'roles'                    => [],
